@@ -2,6 +2,8 @@ import { createHash } from 'crypto';
 import fs from 'fs';
 
 const calculateHash = async () => {
+  // TODO - solve this
+
   // const content = await fs.readFile('./src/hash/files/fileToCalculateHashFor.txt', 'utf-8');
   //
   // const hex = createHash('sha256').update(content).digest('hex');
