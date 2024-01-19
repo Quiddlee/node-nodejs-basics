@@ -4,36 +4,25 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const workerPath = path.join(__dirname, 'worker.js');
+const WORKER_PATH = path.join(__dirname, 'worker.js');
+const CPU_CORES = os.cpus();
 
 const performCalculations = async () => {
-  // Write your code here
-  const cpuCores = os.cpus();
-  const workersQueue = [];
+  const workersQueue = CPU_CORES.map((_core, i) =>
+      new Promise((resolve, reject) =>
+          new Worker(WORKER_PATH, { workerData: i + 10 })
+              .on('message', resolve)
+              .on('error', reject)
+      )
+  );
 
-  cpuCores.forEach((_core, i) => {
-    const worker = new Worker(workerPath, { workerData: i + 10 });
-
-    workersQueue.push(
-        new Promise((resolve, reject) => {
-          worker.on('message', (data) => resolve(data));
-          worker.on('error', (err) => reject(err));
-        })
-    );
-  });
-
-  const workerResults = await Promise.allSettled(workersQueue);
-  const result = workerResults.map(res => {
-    if (res.status === 'fulfilled') {
-      return {
-        status: 'resolved',
-        data: res.value
-      };
-    }
+  const workersResults = await Promise.allSettled(workersQueue);
+  const result = workersResults.map(res => {
+    const isFulfilled = res.status === 'fulfilled';
 
     return {
-      status: 'error',
-      data: null
+      status: isFulfilled ? 'resolved' : 'error',
+      data: isFulfilled ? res.value : null,
     };
   });
 
