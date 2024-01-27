@@ -2,8 +2,9 @@ import path from 'path';
 import { release, version } from 'os';
 import { createServer as createServerHttp } from 'http';
 import { fileURLToPath } from 'url';
+import { readFile } from 'fs/promises';
 
-import('./files/c.js');
+'./files/c.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,9 +14,9 @@ const random = Math.random();
 let unknownObject;
 
 if (random > 0.5) {
-  unknownObject = await import('./files/a.json', { assert: { type: 'json' } });
+  unknownObject = JSON.parse(await readFile(`${ __dirname }/files/a.json`, { encoding: 'utf-8' }));
 } else {
-  unknownObject = await import('./files/b.json', { assert: { type: 'json' } });
+  unknownObject = JSON.parse(await readFile(`${ __dirname }/files/b.json`, { encoding: 'utf-8' }));
 }
 
 console.log(`Release ${ release() }`);
