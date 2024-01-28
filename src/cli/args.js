@@ -6,7 +6,7 @@ const parseArgs = () => {
           .slice(2)
           .map((value, i) => {
             if (i % 2 === 0) {
-              cache = value;
+              cache = value.replace('--', '');
               return;
             }
 
