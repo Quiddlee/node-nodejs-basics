@@ -1,8 +1,13 @@
 import { createHash } from 'crypto';
 import fs from 'fs';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const calculateHash = async () => {
-  fs.createReadStream('./src/hash/files/fileToCalculateHashFor.txt')
+  fs.createReadStream(`${__dirname}/files/fileToCalculateHashFor.txt`)
       .on('error', () => {
         throw new Error('FS operation failed');
       })
