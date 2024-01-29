@@ -1,10 +1,9 @@
-import path from 'path';
-import { release, version } from 'os';
 import { createServer as createServerHttp } from 'http';
+import { release, version } from 'os';
+import path from 'path';
 import { fileURLToPath } from 'url';
-import { readFile } from 'fs/promises';
 
-'./files/c.js';
+import "./files/c.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
