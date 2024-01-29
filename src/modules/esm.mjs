@@ -3,7 +3,7 @@ import { release, version } from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import "./files/c.js";
+import './files/c.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
